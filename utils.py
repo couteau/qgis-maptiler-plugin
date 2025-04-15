@@ -98,7 +98,7 @@ def _qgis_request(url: str):
         request = QNetworkRequest(QUrl(url))
         reply_content = QgsNetworkAccessManager.instance().blockingGet(request)
 
-    if not reply_content.error():
+    if reply_content.error() == QNetworkReply.NetworkError.NoError:
         return reply_content
     else:
         error_msg = ""
@@ -112,7 +112,7 @@ def _qgis_request(url: str):
 
 def qgis_request_json(url: str) -> dict:
     reply_content = _qgis_request(url)
-    if not reply_content.error():
+    if reply_content.error() == QNetworkReply.NetworkError.NoError:
         json_data = json.loads(reply_content.content().data().decode())
         return json_data
     else:

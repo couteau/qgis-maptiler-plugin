@@ -468,7 +468,7 @@ class MapDataItem(QgsDataItem):
 
                 button.pressed.connect(show_warnings)
                 widget.layout().addWidget(button)
-                iface.messageBar().pushWidget(widget, Qgis.Warning)
+                iface.messageBar().pushWidget(widget, Qgis.MessageLevel.Warning)
 
         # Add background layer as last if exists
         bg_renderer = converter.get_bg_renderer(style_json_data)
@@ -538,7 +538,7 @@ class MapDataItem(QgsDataItem):
                 else:
                     widget = iface.messageBar().createMessage(f"'{self.name()} Layer Loading Error',"
                                                               f"'This map\'s JSON is for Vector Tile. Vector Tile feature is not available on this QGIS version.'")
-                    iface.messageBar().pushWidget(widget, Qgis.Warning)
+                    iface.messageBar().pushWidget(widget, Qgis.MessageLevel.Warning)
             else:
                 self._add_raster_to_canvas(data_key='custom')
         except utils.MapTilerApiException as e:
@@ -561,12 +561,12 @@ class MapDataItem(QgsDataItem):
             details_dlg = QgsMessageViewer()
             details_dlg.setTitle("MapTiler API Access denied")
 
-            details_dlg.setMessage(detail_msg, 0)
+            details_dlg.setMessage(detail_msg, QgsMessageViewer.MessageType.MessageText)
             details_dlg.showMessage()
 
         button.pressed.connect(show_warnings)
         widget.layout().addWidget(button)
-        iface.messageBar().pushWidget(widget, Qgis.Warning)
+        iface.messageBar().pushWidget(widget, Qgis.MessageLevel.Warning)
 
     def _edit(self):
         edit_dialog = EditConnectionDialog(self._name)
